@@ -8,7 +8,7 @@ ENV POSTGIS_VERSION=2.2.1 \
 
 RUN apk update && apk upgrade && \
     apk add curl libxml2 json-c libxml2-dev json-c-dev alpine-sdk autoconf automake libtool \
-    postgresql postgresql-contrib postgresql-dev && \
+    postgresql postgresql-contrib postgresql-dev libstdc++ && \
     curl -o /usr/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" && \
     chmod +x /usr/bin/gosu && \
     mkdir -p /tmp/build && cd /tmp/build && \
