@@ -24,10 +24,10 @@ RUN apk update && apk upgrade && \
     tar xzf gdal-${GDAL_VERSION}.tar.gz && \
     tar xzf postgis-${POSTGIS_VERSION}.tar.gz && \
     tar xzf pg_shard-${PG_SHARD_VERSION}.tar.gz && \
-    cd /tmp/build/proj.4* && ./configure --enable-silent-rules && make -s && make -s install && \
-    cd /tmp/build/libgeos* && ./autogen.sh && ./configure --enable-silent-rules CFLAGS="-D__sun -D__GNUC__"  CXXFLAGS="-D__GNUC___ -D__sun" && make -s && make -s install && \
-    cd /tmp/build/gdal* && ./configure --enable-silent-rules --with-static-proj4=/usr/local/lib && make -s && make -s install && \
-    cd /tmp/build/postgis* && ./autogen.sh && ./configure --enable-silent-rules --with-projdir=/usr/local && \
+    cd /tmp/build/proj.4* && ./configure --prefix=/usr --enable-silent-rules && make -s && make -s install && \
+    cd /tmp/build/libgeos* && ./autogen.sh && ./configure --prefix=/usr --enable-silent-rules CFLAGS="-D__sun -D__GNUC__"  CXXFLAGS="-D__GNUC___ -D__sun" && make -s && make -s install && \
+    cd /tmp/build/gdal* && ./configure --prefix=/usr --enable-silent-rules --with-static-proj4=/usr/local/lib && make -s && make -s install && \
+    cd /tmp/build/postgis* && ./autogen.sh && ./configure --prefix=/usr --enable-silent-rules --with-projdir=/usr/local && \
     cd /tmp/build/postgis* && \
     echo "PERL = /usr/bin/perl" >> extensions/postgis/Makefile && \
     echo "PERL = /usr/bin/perl" >> extensions/postgis_topology/Makefile && make -s && make -s install && \
