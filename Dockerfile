@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM alpine:edge
 MAINTAINER George Kutsurua <g.kutsurua@gmail.com>
 
 ENV POSTGIS_VERSION=2.2.1 \
