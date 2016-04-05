@@ -1,7 +1,7 @@
 FROM alpine:edge
 MAINTAINER George Kutsurua <g.kutsurua@gmail.com>
 
-ENV POSTGIS_VERSION=2.2.1 \
+ENV POSTGIS_VERSION=2.2.2 \
     GEOS_VERSION=3.5.0 \
     PROJ4_VERSION=4.9.2 \
     GDAL_VERSION=2.0.2
