@@ -2,19 +2,19 @@
 chown -R postgres "$PGDATA"
 
 if [ -z "$(ls -A "$PGDATA")" ]; then
-    gosu postgres initdb
+    sudo -H -u postgres -E -- initdb
     sed -ri "s/^#(listen_addresses\s*=\s*)\S+/\1'*'/" "$PGDATA"/postgresql.conf
 
-    POSTGRES_USER=${POSTGRES_USER:-postgres}
-    POSTGRES_DB=${POSTGRES_DB:-${POSTGRES_USER}}
-    POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-${POSTGRES_USER}}
+    DATABASE_USER=${DATABASE_USER:-postgres}
+    DATABASE_NAME=${DATABASE_NAME:-${DATABASE_USER}}
+    DATABASE_PASSWORD=${DATABASE_PASSWORD:-${DATABASE_USER}}
 
-    if [ "$POSTGRES_PASSWORD" ]; then
-      pass="PASSWORD '$POSTGRES_PASSWORD'"
+    if [ "$DATABASE_PASSWORD" ]; then
+      pass="PASSWORD '$DATABASE_PASSWORD'"
       authMethod=md5
     else
       echo "==============================="
-      echo "!!! Use \$POSTGRES_PASSWORD env var to secure your database !!!"
+      echo "!!! Use \$DATABASE_PASSWORD env var to secure your database !!!"
       echo "==============================="
       pass=
       authMethod=trust
@@ -22,23 +22,23 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
     echo
 
 
-    if [ "$POSTGRES_DB" != 'postgres' ]; then
-      createSql="CREATE DATABASE \"$POSTGRES_DB\";"
-      echo $createSql | gosu postgres postgres --single -jE
+    if [ "$DATABASE_NAME" != 'postgres' ]; then
+      createSql="CREATE DATABASE \"$DATABASE_NAME\";"
+      echo $createSql | sudo -H -u postgres -E -- postgres --single -jE
       echo
     fi
 
-    if [ "$POSTGRES_USER" != 'postgres' ]; then
+    if [ "$DATABASE_USER" != 'postgres' ]; then
       op=CREATE
     else
       op=ALTER
     fi
 
-    userSql="$op USER \"${POSTGRES_USER}\" WITH SUPERUSER $pass;"
-    echo $userSql | gosu postgres postgres --single -jE
+    userSql="$op USER \"${DATABASE_USER}\" WITH SUPERUSER $pass;"
+    echo $userSql |  sudo -H -u postgres -E -- postgres --single -jE
     echo
 
     { echo; echo "host all all 0.0.0.0/0 $authMethod"; } >> "$PGDATA"/pg_hba.conf
 fi
 
-exec gosu postgres $@
+exec sudo -H -u postgres -E -- postgres $@
