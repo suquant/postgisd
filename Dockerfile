@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:xenial
 MAINTAINER George Kutsurua <g.kutsurua@gmail.com>
 
 ENV POSTGRES_VERSION=9.6 \

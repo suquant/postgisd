@@ -5,9 +5,9 @@ if [ -z "$(ls -A "$PGDATA")" ]; then
     sudo -H -u postgres -E -- initdb
     sed -ri "s/^#(listen_addresses\s*=\s*)\S+/\1'*'/" "$PGDATA"/postgresql.conf
 
-    DATABASE_USER=${DATABASE_USER:-postgres}
-    DATABASE_NAME=${DATABASE_NAME:-${DATABASE_USER}}
-    DATABASE_PASSWORD=${DATABASE_PASSWORD:-${DATABASE_USER}}
+    DATABASE_USER=${DATABASE_USER:-${POSTGRES_USER:-postgres}}
+    DATABASE_NAME=${DATABASE_NAME:-${POSTGRES_DB:-${DATABASE_USER}}}
+    DATABASE_PASSWORD=${DATABASE_PASSWORD:-${POSTGRES_PASSWORD:-${DATABASE_USER}}}
 
     if [ "$DATABASE_PASSWORD" ]; then
       pass="PASSWORD '$DATABASE_PASSWORD'"
