@@ -1,5 +1,7 @@
 #!/bin/sh
 chown -R postgres "$PGDATA"
+mkdir -p /run/postgresql
+chown -R postgres /run/postgresql
 
 if [ -z "$(ls -A "$PGDATA")" ]; then
     sudo -H -u postgres -E -- initdb
